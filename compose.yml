@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres 
+    environment:
+      POSTGRES_DB: tempochat
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+  redis:
+    image: "redis:alpine"
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8088:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}

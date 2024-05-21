@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +27,10 @@ SECRET_KEY = 'django-insecure-5whl8!zb__r&w(s&d0wj-(d29!eohb71(f=x3@s!#ym5gebnm+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "tempochat.bermudez.ca"
+]
 
 
 # Application definition
@@ -39,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'rest_framework',
-    'chat',
+    'tempochat',
+    'users',
 ]
 
 ASGI_APPLICATION = 'chatapp.asgi.application'
@@ -93,7 +99,7 @@ DATABASES = {
         'NAME': 'tempochat',
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',  # or '3306' for MySQL
     }
 }
@@ -117,6 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
