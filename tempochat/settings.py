@@ -32,6 +32,7 @@ ALLOWED_HOSTS = [
     "tempochat.bermudez.ca"
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://tempochat.bermudez.ca']
 
 # Application definition
 
@@ -48,13 +49,13 @@ INSTALLED_APPS = [
     'users',
 ]
 
-ASGI_APPLICATION = 'chatapp.asgi.application'
+ASGI_APPLICATION = 'tempochat.asgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)],
+            'hosts': [('redis', 6379)],
         },
     },
 }
@@ -146,3 +147,31 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+# Throtling
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '10/min',
+    }
+}
